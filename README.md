@@ -101,8 +101,9 @@ What is the difference between ClusterIP and DNS name?
 How to debug inter-service communication issues?
 
 
-### Service flow
-```Imagine frontend pod doing:
+# Service flow
+```
+Imagine frontend pod doing:
 
 fetch('http://backend-service:80/api/books')
 DNS resolves backend-service into a ClusterIP
@@ -128,8 +129,6 @@ $# nslookup backend-service.default.svc.cluster.local
 Name:   backend-service.default.svc.cluster.local
 Address: 10.96.92.147
 
-
-
 3 pod tries to connect to clusterip -> kube-proxy
 
 Ab IP mil gaya, connection try karta hai.
@@ -150,15 +149,19 @@ Task	Handled By
 backend-service DNS resolve → IP	CoreDNS
 ClusterIP → actual pod IP route	kube-proxy
 HTTP Response handle	Backend Pod (App)
+```
 
-```Frontend bola: "Mujhe backend-service se baat karni hai"
+# Actual Service flow
+```
+Frontend bola: "Mujhe backend-service se baat karni hai"
 CoreDNS bola: "Yeh lo IP: 10.96.12.34"
 kube-proxy bola: "Tension mat le, main ise actual backend pod tak pahucha dunga"
 Backend bola: "Aa gaya! Lele /api/books ka data!"
+```
 
----
 
-```moving into expert-level, mind-twisting Terraform questions that’ll challenge your assumptions, test edge cases
+```
+Moving into expert-level, mind-twisting Terraform questions that’ll challenge your assumptions, test edge cases
 
 PDB - pod disruption budget
 It prevents voluntary disruptions (like node drain) from bringing down all pods of a critical app.
