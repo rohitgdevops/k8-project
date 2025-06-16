@@ -20,7 +20,7 @@ k8s-project/
 └── README.md
 ```
 
-``` Commands
+``` ### Commands
 kubectl port-forward svc/backend-service 8080:80 (http://localhost:8080/api/books
 )
 docker tag backend:v2 rohitk09/backend:v2
