@@ -69,7 +69,7 @@ Kubelet	Serves metrics via https://<node>:10250/stats/summary
 Metrics Server	Aggregates metrics from all kubelets
 HPA Controller	Queries metrics-server via API: /apis/metrics.k8s.io/v1beta1
 ```
-
+Next
 ```
 How does HPA work internally?
 
@@ -85,7 +85,8 @@ What if metrics-server is not reachable?
 
 How HPA reacts during pod crash or rollout?
 
-``` Interview Questions From This:
+```
+Interview Questions From This:
 How does service discovery work in Kubernetes?
 
 What is the role of CoreDNS?
@@ -102,8 +103,7 @@ How to debug inter-service communication issues?
 
 
 # Service flow
-```
-Imagine frontend pod doing:
+```Imagine frontend pod doing:
 
 fetch('http://backend-service:80/api/books')
 DNS resolves backend-service into a ClusterIP
@@ -158,7 +158,7 @@ CoreDNS bola: "Yeh lo IP: 10.96.12.34"
 kube-proxy bola: "Tension mat le, main ise actual backend pod tak pahucha dunga"
 Backend bola: "Aa gaya! Lele /api/books ka data!"
 ```
-
+Hello
 
 ```
 Moving into expert-level, mind-twisting Terraform questions that’ll challenge your assumptions, test edge cases
