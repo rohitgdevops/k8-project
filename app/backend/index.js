@@ -4,8 +4,8 @@ const PORT = 3000;
 
 app.get('/api/books', (req, res) => {
   res.json([
-    { id: 1, title: "Clean Code" },
-    { id: 2, title: "The Pragmatic Programmer" },
+    { id: 1, title: "K8 Project" },
+    { id: 2, title: "Kubernetes Programmer" },
   ]);
 });
 

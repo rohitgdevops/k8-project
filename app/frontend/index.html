@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Store</title>
+</head>
+<body>
+  <h1>Book List</h1>
+  <ul id="book-list"></ul>
+
+  <script>
+    fetch('http://backend-service/api/books')
+      .then(res => res.json())
+      .then(books => {
+        const list = document.getElementById('book-list');
+        books.forEach(book => {
+          const li = document.createElement('li');
+          li.textContent = book.title;
+          list.appendChild(li);
+        });
+      })
+      .catch(err => {
+        document.body.innerHTML += '<p style="color:red;">Failed to fetch books</p>';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
+
