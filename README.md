@@ -101,8 +101,7 @@ How to debug inter-service communication issues?
 
 
 ### Service flow
-```
-Imagine frontend pod doing:
+```Imagine frontend pod doing:
 
 fetch('http://backend-service:80/api/books')
 DNS resolves backend-service into a ClusterIP
