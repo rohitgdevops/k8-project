@@ -150,4 +150,31 @@ backend-service DNS resolve → IP	CoreDNS
 ClusterIP → actual pod IP route	kube-proxy
 HTTP Response handle	Backend Pod (App)
 
+```Frontend bola: "Mujhe backend-service se baat karni hai"
+CoreDNS bola: "Yeh lo IP: 10.96.12.34"
+kube-proxy bola: "Tension mat le, main ise actual backend pod tak pahucha dunga"
+Backend bola: "Aa gaya! Lele /api/books ka data!"
+
+---
+
+```moving into expert-level, mind-twisting Terraform questions that’ll challenge your assumptions, test edge cases
+
+PDB - pod disruption budget
+It prevents voluntary disruptions (like node drain) from bringing down all pods of a critical app.
+
+PDB ensures: minimum number of pods always remain available, even during:
+Node upgrades
+Manual node drains
+
+Voluntary disruptions(like drain)
+involunatry disrution matlab crash usmai pdb kuch nhi kar sakta
+
+PDB kiske sath kaam karta hai?
+
+Only on:
+Deployments
+ReplicaSets
+StatefulSets
+
+Drain fail ho jayega — "cannot evict pod due to PDB"
 
