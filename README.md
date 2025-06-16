@@ -20,7 +20,7 @@ k8s-project/
 └── README.md
 ```
 
-``` ### Commands
+``` # Commands
 kubectl port-forward svc/backend-service 8080:80 (http://localhost:8080/api/books
 )
 docker tag backend:v2 rohitk09/backend:v2
@@ -33,14 +33,14 @@ kubectl patch deployment metrics-server -n kube-system \
 
 
 ```
-Q DIfference between CMD and Entrypoint
-Q Why Deployment and not Pod?
+# Q DIfference between CMD and Entrypoint
+# Q Why Deployment and not Pod?
   Because Deployment handles self-healing, upgrades, scaling, and gives us rollback   unlike a plain Pod.
- Q Can two services use same targetPort but different ports?
+# Q Can two services use same targetPort but different ports?
 ```
 
 ```
- Step-by-step Architecture:
+# Step-by-step Architecture:
 1. Each Kubelet on every node continuously monitors the pods running on that node:
 It collects CPU and memory usage via cAdvisor (built-in into Kubelet)
 
