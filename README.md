@@ -18,6 +18,7 @@ k8s-project/
 ├── .github/workflows/
 │   └── ci-cd.yaml (later)
 └── README.md
+```
 
 ``` Commands
 kubectl port-forward svc/backend-service 8080:80 (http://localhost:8080/api/books
@@ -28,7 +29,7 @@ docker push rohitk09/backend:v2
 kubectl top pod - check metrics service is available or not
 kubectl patch deployment metrics-server -n kube-system \
   --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
-
+```
 
 
 ```
@@ -36,7 +37,7 @@ Q DIfference between CMD and Entrypoint
 Q Why Deployment and not Pod?
   Because Deployment handles self-healing, upgrades, scaling, and gives us rollback   unlike a plain Pod.
  Q Can two services use same targetPort but different ports?
-
+```
 
 ```
  Step-by-step Architecture:
@@ -67,7 +68,7 @@ Pod (cAdvisor)	Sends metrics to kubelet
 Kubelet	Serves metrics via https://<node>:10250/stats/summary
 Metrics Server	Aggregates metrics from all kubelets
 HPA Controller	Queries metrics-server via API: /apis/metrics.k8s.io/v1beta1
-
+```
 
 ```
 How does HPA work internally?
