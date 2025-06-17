@@ -220,3 +220,4 @@ Easy installation via helm install and upgrade via helm upgrade
 └── values.yaml
 
 ```
+# kubectl get endpoints backend
