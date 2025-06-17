@@ -1,0 +1,19 @@
+name: CD Backend
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: Set up kubeconfig
+        run: | 
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+      - name: Deploy backend via Helm
+        run: |
+          helm upgrade --install backend ./helm-charts/backend/backend --namespace default --create-namespace
