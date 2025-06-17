@@ -1,7 +1,7 @@
-# ✅ Name of the workflow (visible in GitHub Actions tab)
+# Name of the workflow (visible in GitHub Actions tab)
 name: Backend CI
 
-# ✅ Trigger conditions
+# Trigger conditions
 on:
   push:
     paths:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    # ✅ Define the runner environment
+    #  Define the runner environment
     runs-on: ubuntu-latest
 
     steps:
