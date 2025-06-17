@@ -13,6 +13,8 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "backend.name" . }}  
     spec:
       containers:
         - name: {{ .Chart.Name }}

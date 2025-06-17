@@ -1,0 +1,27 @@
+replicaCount: 1
+
+image:
+  repository: rohitk09/frontend
+  tag: v1
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  host: frontend.local
+  path: /
+  pathType: Prefix
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
