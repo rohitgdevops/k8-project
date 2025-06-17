@@ -26,3 +26,21 @@ Add the following to GitHub repo settings → Secrets:
 - `DOCKER_USERNAME`
 - `DOCKER_PASSWORD`
 - `KUBE_CONFIG_DATA`
+
+## 🔁 CI/CD Overview
+
+### 📁 Folder Structure
+- app/backend → Node.js backend app
+- app/frontend → HTML frontend
+- helm-charts → Helm charts for backend & frontend
+
+### ⚙️ CI (GitHub Actions)
+- `backend.yaml`: Builds and pushes Docker image for backend
+- `frontend.yaml`: Same for frontend
+
+### 🚀 CD (GitHub Actions)
+- Uses Helm to deploy images to Kubernetes cluster
+
+### 🗂️ Branching Strategy
+- `main` → Stable, triggers CI/CD
+- `dev` → Development work, PRs merged here
