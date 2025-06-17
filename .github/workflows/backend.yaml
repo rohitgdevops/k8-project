@@ -14,22 +14,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ Step 1: Checkout code from GitHub repo
+      # Step 1: Checkout code from GitHub repo
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # ✅ Step 2: Setup Node.js environment
+      # Step 2: Setup Node.js environment
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'   # Specify Node.js version
 
-      # ✅ Step 3: Install dependencies from package.json
+      # Step 3: Install dependencies from package.json
       - name: Install dependencies
         run: npm install
         working-directory: app/backend  # Path where package.json exists
 
-      # ✅ Step 4: Run tests (currently skipped)
+      # Step 4: Run tests (currently skipped)
       - name: Run tests
         run: echo "Skipping tests for now"  # Replace with `npm test` when ready
         working-directory: app/backend
+      # Step 5: Log in to Dockerhub
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secret.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: build docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest .
+        working-directory: app/backend
+      - name: Push image to Docker
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
