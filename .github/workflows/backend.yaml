@@ -1,28 +1,35 @@
-name: Build and Push Backend Image   # <-- 1. Workflow name (root level)
+# ✅ Name of the workflow (visible in GitHub Actions tab)
+name: Backend CI
 
-on:                                  # <-- 2. Triggering condition (root level)
+# ✅ Trigger conditions
+on:
   push:
-    branches:
-      - main
-      - develop
+    paths:
+      - 'app/backend/**'                     # Only trigger when backend code changes
+      - '.github/workflows/backend-ci.yml'  # Also trigger if this workflow file itself changes
 
-jobs:                                # <-- 3. Start of all jobs
-  build:                             # <-- 4. Job name (like a stage)
-    runs-on: ubuntu-latest           # <-- 5. Which VM this job runs on
+jobs:
+  build:
+    # ✅ Define the runner environment
+    runs-on: ubuntu-latest
 
-    steps:                           # <-- 6. Inside this job, define what steps to run
-      - name: Checkout code          # <-- 7. First step
-        uses: actions/checkout@v3    # <-- 8. Use GitHub-provided action
-      
+    steps:
+      # ✅ Step 1: Checkout code from GitHub repo
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # ✅ Step 2: Setup Node.js environment
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node:version: '18'
-          
-      - name: Install dependecies
-        run: npm install
-        working-directory: app/backend
+          node-version: '18'   # Specify Node.js version
 
-      - name: Run Tests
-        run: echo "Skipping test for now"
-        working-directory: app/backedn
+      # ✅ Step 3: Install dependencies from package.json
+      - name: Install dependencies
+        run: npm install
+        working-directory: app/backend  # Path where package.json exists
+
+      # ✅ Step 4: Run tests (currently skipped)
+      - name: Run tests
+        run: echo "Skipping tests for now"  # Replace with `npm test` when ready
+        working-directory: app/backend
