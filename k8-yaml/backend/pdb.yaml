@@ -1,0 +1,11 @@
+# backend-pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: backend-pdb
+spec:
+  minAvailable: 1  # at least 1 pod should always be available
+  selector:
+    matchLabels:
+      app: backend
+

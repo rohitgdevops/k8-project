@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: rohitk09/backend:v2
+          image: rohitk09/backend:v4
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -24,11 +24,23 @@ spec:
             httpGet:
               path: /health
               port: 3000
-            initialDelaySeconds: 5
+            initialDelaySeconds: 15
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: 3000
-            initialDelaySeconds: 2
+            initialDelaySeconds: 10
             periodSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: backend-config
+            - secretRef:
+                name: backend-secret
+          resources:
+            requests:
+              cpu: "100m"      # Minimum CPU guaranteed (0.1 core)
+              memory: "128Mi"  # Minimum Memory required
+            limits:
+              cpu: "200m"      # Max CPU it can use
+              memory: "256Mi"  # Max Memory         

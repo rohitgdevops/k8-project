@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
-  labels:
-    app: frontend
 spec:
   replicas: 1
   selector:
@@ -16,8 +14,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: rohitk09/frontend:v1
-          imagePullPolicy: Always
+          image: rohitk09/frontend:v4
+          imagePullPolicy: Always  
           ports:
             - containerPort: 80
 

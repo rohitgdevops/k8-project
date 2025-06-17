@@ -1,0 +1,42 @@
+replicaCount: 2
+
+image:
+  repository: rohitk09/backend
+  tag: v4
+  pullPolicy: Always
+
+containerPort: 3000
+
+configMapName: backend-config
+secretName: backend-secret
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+
+livenessProbe:
+  path: /health
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  path: /health
+  initialDelaySeconds: 2
+  periodSeconds: 5
+
+ingress:
+  enabled: true
+  host: backend.local
+service:
+  port: 3000
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+

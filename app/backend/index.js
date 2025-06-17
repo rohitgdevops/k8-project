@@ -9,6 +9,10 @@ app.get('/api/books', (req, res) => {
   ]);
 });
 
-app.listen(PORT, () => {
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend server running on port ${PORT}`);
 });

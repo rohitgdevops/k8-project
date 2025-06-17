@@ -8,7 +8,8 @@
   <ul id="book-list"></ul>
 
   <script>
-    fetch('http://backend-service/api/books')
+ fetch('http://backend-service/api/books')
+      //fetch('/api/books')
       .then(res => res.json())
       .then(books => {
         const list = document.getElementById('book-list');
