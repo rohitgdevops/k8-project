@@ -26,6 +26,9 @@ kubectl port-forward svc/backend-service 8080:80 (http://localhost:8080/api/book
 docker tag backend:v2 rohitk09/backend:v2
 docker push rohitk09/backend:v2
 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/kind/deploy.yaml
+kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
+
 kubectl top pod - check metrics service is available or not
 kubectl patch deployment metrics-server -n kube-system \
   --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
@@ -200,4 +203,20 @@ Parameterized configs via values.yaml
 Versioning, Rollback
 Dependency management
 Easy installation via helm install and upgrade via helm upgrade
+
+# helm create <applicationName>
+├── Chart.yaml
+├── charts
+├── templates
+│   ├── NOTES.txt
+│   ├── _helpers.tpl
+│   ├── deployment.yaml
+│   ├── hpa.yaml
+│   ├── ingress.yaml
+│   ├── service.yaml
+│   ├── serviceaccount.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+
 ```
