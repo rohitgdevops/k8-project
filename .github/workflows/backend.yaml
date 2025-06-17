@@ -1,1 +1,28 @@
-.
+name: Build and Push Backend Image   # <-- 1. Workflow name (root level)
+
+on:                                  # <-- 2. Triggering condition (root level)
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:                                # <-- 3. Start of all jobs
+  build:                             # <-- 4. Job name (like a stage)
+    runs-on: ubuntu-latest           # <-- 5. Which VM this job runs on
+
+    steps:                           # <-- 6. Inside this job, define what steps to run
+      - name: Checkout code          # <-- 7. First step
+        uses: actions/checkout@v3    # <-- 8. Use GitHub-provided action
+      
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node:version: '18'
+          
+      - name: Install dependecies
+        run: npm install
+        working-directory: app/backend
+
+      - name: Run Tests
+        run: echo "Skipping test for now"
+        working-directory: app/backedn
