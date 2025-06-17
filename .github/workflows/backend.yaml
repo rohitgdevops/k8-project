@@ -6,8 +6,9 @@ on:
   push:
     branches:
       - main
-      #- 'app/backend/**'                     # Only trigger when backend code changes
-      #- '.github/workflows/backend-ci.yml'  # Also trigger if this workflow file itself changes
+    paths:
+      - 'app/backend/**'                     # Only trigger when backend code changes
+      - '.github/workflows/backend-ci.yml'  # Also trigger if this workflow file itself changes
   workflow_dispatch:
   
 jobs:
