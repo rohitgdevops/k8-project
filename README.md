@@ -181,4 +181,23 @@ ReplicaSets
 StatefulSets
 
 Drain fail ho jayega — "cannot evict pod due to PDB"
+```
 
+# install inginx controller in kind
+```kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/kind/deploy.yaml
+kubectl label node kind-control-plane ingress-ready=true
+kubectl label node kind-worker ingress-ready=true
+```
+# Helm
+```Helm is:
+
+“The package manager for Kubernetes”
+
+It gives you:
+
+Templating system to reuse YAMLs
+Parameterized configs via values.yaml
+Versioning, Rollback
+Dependency management
+Easy installation via helm install and upgrade via helm upgrade
+```
