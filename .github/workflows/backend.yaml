@@ -1,4 +1,4 @@
-# Name of the workflow (visible in GitHub Actions tab)
+# .Name of the workflow (visible in GitHub Actions tab)
 name: Backend CI
 
 # Trigger conditions
