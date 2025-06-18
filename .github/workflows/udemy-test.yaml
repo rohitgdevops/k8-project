@@ -15,3 +15,11 @@ jobs:
           import platform
           print (platform.processor())
         shell: python
+  run-win-commands:
+    runs-on: windows-latest
+    steps:
+      - name: directory powershell
+        run: get-location
+      - name: directory bash
+        run: pwd
+        shell: bash
