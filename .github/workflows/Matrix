@@ -36,3 +36,12 @@ You want to test your Node.js backend on multiple versions like:
         run: npm test
         working-directory: app/backend
 
+What Happens Behind the Scenes?
+GitHub spins up 3 runners in parallel:
+
+Runner #	Node Version
+1	16
+2	18
+3	20
+
+Same job runs independently in each.
