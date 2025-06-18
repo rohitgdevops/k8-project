@@ -1,70 +1,63 @@
-# .Name of the workflow (visible in GitHub Actions tab.)
-name: Backend CI
+# File: .github/workflows/backend.yml
+name: Backend CI/CD Pipeline
 
-# # Trigger conditions
 on:
   push:
     branches:
-      - main
-    paths:
-      - 'app/backend/**'                     # .Only trigger when backend code changes
-      - '.github/workflows/backend.yml'  # Also trigger if this workflow file itself changes
-  workflow_dispatch:                    # To trigger the workflow manually
-    inputs:
-      environment:
-        description: 'Target environment'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
+      - main             # Trigger on merge to main
+  pull_request:
+    branches:
+      - main             # Trigger on PR to main
+  workflow_dispatch:      # Manual trigger option
 
 env:
-   DUMMY: "triiger2"
-   
-jobs:
-  build:
-    #  Define the runner environment
-    runs-on: ubuntu-latest
+  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
+jobs:
+  # Step 1: Build & Test Job (runs on PR and on merge)
+  build-and-test:
+    runs-on: ubuntu-latest
+    name: Build & Test
     steps:
-      # Step 1: Checkout code from GitHub repo
       - name: Checkout Code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # gets full history
-          ref: develop    # checkout specfic branch if needed
-        
-# below step set up Nodejs ver 18 inside github runner
-      # Step 2: Setup Node.js environment
-      - name: Install Node.js
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'   # Specify Node.js version
-          cache: 'npm'         # cache .npm folder and re-use for next step 3 so that npm skips downloading 
+          node-version: '18'
 
-      # Step 3: Install dependencies from package.json
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
-        working-directory: app/backend  # Path where package.json exists
-     
-      - name: Install production dependencies
-        run: |
-          npm ci
-          npm prune --production            #Q: How to reduce Docker image size before building in GitHub Actions?
         working-directory: app/backend
-   
-    
+
+      - name: Run Linter
+        run: npm run lint
+        working-directory: app/backend
+
+      - name: Run Unit Tests
+        run: npm test
+        working-directory: app/backend
+
+  # Step 2: Docker Build & Push (only runs after PR merged to main)
+  docker-deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    name: Docker Build & Push
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          
-      - name: build docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest .
+
+      - name: Build Docker Image
+        run: docker build -t $DOCKER_IMAGE .
         working-directory: app/backend
-        
-      - name: Push image to Docker
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
+
+      - name: Push Docker Image
+        run: docker push $DOCKER_IMAGE
