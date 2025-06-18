@@ -1,7 +1,9 @@
 name: ENV variable
-on: push
+on: 
 env:
   WF_ENV: Available to all jobs
+  wf_env: ${{ secret.job_ok }}
+  Secret_env: ${{ secrets.GITHUB_TOKEN }}  # we can pass the token from here
 
 jobs:
   log-env:
