@@ -1,76 +1,146 @@
-# .Name of the workflow (visible in GitHub Actions tab.)
+# 📛 Workflow name shown in Actions tab
 name: Backend CI
 
-# # Trigger conditions
+# 🚀 Trigger workflow on push to main or manual run
 on:
   push:
     branches:
       - main
-    pull_request:
-      branches:
-        - main
     paths:
-      - 'app/backend/**'                     # .Only trigger when backend code changes
-      - '.github/workflows/backend.yml'  # Also trigger if this workflow file itself changes
-  workflow_dispatch:                    # To trigger the workflow manually
-    inputs:
-      environment:
-        description: 'Target environment'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
+      - 'app/backend/**'
+      - '.github/workflows/backend.yml'
+  workflow_dispatch:
 
 env:
-  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+  DUMMY: "trigger"   # Optional global env var
 
 jobs:
-  # ✅ Step 1: Build & Test Job (runs on PR and on merge)
-  build-and-test:
+
+  #########################################################
+  # 🧱 JOB 1: BUILD - Compiles and uploads artifact
+  #########################################################
+  build:
     runs-on: ubuntu-latest
-    name: Build & Test
+    name: Build Backend App
+
     steps:
-      - name: ⬇️ Checkout Code
+      - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: 📦 Install Dependencies
-        run: npm install
+      - name: Install dependencies
+        run: npm ci
         working-directory: app/backend
 
-      - name: 🧪 Run Linter
-        run: npm run lint
+      - name: Build app
+        run: npm run build
         working-directory: app/backend
 
-      - name: 🧪 Run Unit Tests
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-dist                     # 🔁 This name will be reused
+          path: app/backend/dist                 # 🗂️ Folder to share with other jobs
+
+
+  #########################################################
+  # ✅ JOB 2: TEST - Runs unit tests using built app
+  #########################################################
+  test:
+    runs-on: ubuntu-latest
+    name: Run Unit Tests
+    needs: build                                 # ⏳ Run after build job
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-dist
+          path: app/backend/dist
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: app/backend
+
+      - name: Run Unit Tests
         run: npm test
         working-directory: app/backend
 
-  # ✅ Step 2: Docker Build & Push (only runs after PR merged to main)
-  docker-deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: build-and-test
+
+  #########################################################
+  # 🔍 JOB 3: SONAR - Analyzes code quality
+  #########################################################
+  sonar:
     runs-on: ubuntu-latest
-    name: Docker Build & Push
+    name: SonarQube Scan
+    needs: test
+
     steps:
-      - name: ⬇️ Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 🔐 Login to DockerHub
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-dist
+          path: app/backend/dist
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: app/backend
+
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          npm install -g sonar-scanner
+          sonar-scanner \
+            -Dsonar.projectKey=my-backend-app \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
+        working-directory: app/backend
+
+
+  #########################################################
+  # 🐳 JOB 4: DOCKER - Builds and pushes image using dist
+  #########################################################
+  docker:
+    runs-on: ubuntu-latest
+    name: Build & Push Docker Image
+    needs: sonar
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-dist
+          path: app/backend/dist
+
+      - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: 🐳 Build Docker Image
-        run: docker build -t $DOCKER_IMAGE .
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest .
         working-directory: app/backend
 
-      - name: 🚀 Push Docker Image
-        run: docker push $DOCKER_IMAGE
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
