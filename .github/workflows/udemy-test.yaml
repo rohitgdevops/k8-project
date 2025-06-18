@@ -23,6 +23,7 @@ jobs:
         run: get-location
       - name: directory bash
         run: pwd
+        shell: bash
   run-github-action:
     runs-on: ubuntu-latest
     steps:
@@ -39,4 +40,4 @@ jobs:
        
     
   
-        shell: bash
+
