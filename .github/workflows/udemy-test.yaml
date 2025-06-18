@@ -27,14 +27,19 @@ jobs:
   run-github-action:
     runs-on: ubuntu-latest
     steps:
-     - name: java action
-       id: greet
-       uses: actions/hello-world-javascript-action@v1
-       with:
-         who-to-greet: Rohit
+     #- name: java action
+       #id: greet
+       #uses: actions/hello-world-javascript-action@v1
+       #with:
+       #  who-to-greet: Rohit
      - name: log greeting time
        run: echo "$ {{ steps.greet.outputs.time }}"
-       
+     - name: checkout
+       uses: actions/checkout@1
+     - name: list files
+       run: |
+         pwd
+         ls -a
        
 
        
