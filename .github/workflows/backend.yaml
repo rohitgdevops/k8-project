@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - 'app/backend/**'                     # Only trigger when backend code changes
+      - 'app/backend/**'                     # .Only trigger when backend code changes
       - '.github/workflows/backend.yml'  # Also trigger if this workflow file itself changes
   workflow_dispatch:
   
