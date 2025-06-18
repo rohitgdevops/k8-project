@@ -1,0 +1,17 @@
+name: testing via udemy
+
+on: [push]
+
+jobs:
+  run-shell-commands:
+    runs-on: ubuntu-latest
+    steps:
+      - name: multiline script
+        run: |
+          node -v
+          npm -v
+      - name: python
+        run: |
+          import platform
+          print (platform.processor())
+        shell: python
