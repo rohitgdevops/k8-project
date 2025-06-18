@@ -9,7 +9,7 @@ on:
     paths:
       - 'app/backend/**'                     # .Only trigger when backend code changes
       - '.github/workflows/backend.yml'  # Also trigger if this workflow file itself changes
-  workflow_dispatch:                    # To trigger the workflow manually
+  #workflow_dispatch:                    # To trigger the workflow manually
   
 jobs:
   build:
