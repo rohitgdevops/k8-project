@@ -1,11 +1,25 @@
 name: testing via udemy
 
 on: 
-  schedule:
-   # - cron: "0  * * * *"
-  push:
+  push: #or(pull_request)
     branches:
-      - main
+      - master
+      - 'feature/*' # for any feature like feature/featA
+      - 'feature/**' # for feature/feat/featA
+      - '!feature/featC' #ignore this branch 
+   # branches-ignore: # we can have wither branches or branches-ignore
+   #   - null
+    tags:
+     - v1.*
+    paths: #or path-ignore like we want to ignore docs/* not want to run on change in
+     - 'app/backend/*'
+  # repository_dispatch:
+  #    types: [build] # whatever we pass , here
+ # schedule:
+   # - cron: "0  * * * *"
+  #push:
+  #  branches:
+  #    - main
   
 
 jobs:
