@@ -10,6 +10,16 @@ on:
       - 'app/backend/**'                     # .Only trigger when backend code changes
       - '.github/workflows/backend.yml'  # Also trigger if this workflow file itself changes
   workflow_dispatch:                    # To trigger the workflow manually
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
 env:
    DUMMY: "triiger2"
    
