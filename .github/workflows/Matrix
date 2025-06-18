@@ -1,0 +1,38 @@
+# Matrix: it allows run the same job in parallel but with different configurations.
+Build for multiple OS (linux, windows)
+Run integration test with multiple DBs
+
+Real-World Scenario
+You want to test your Node.js backend on multiple versions like:
+	• Node 16
+	• Node 18
+	• Node 20
+
+  build-and-test:
+    name: Build & Test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16, 18, 20]        # 👈 Run in parallel for each version
+
+    steps:
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 📦 Install Dependencies
+        run: npm install
+        working-directory: app/backend
+
+      - name: 🧪 Run Linter
+        run: npm run lint
+        working-directory: app/backend
+
+      - name: 🧪 Run Unit Tests
+        run: npm test
+        working-directory: app/backend
+
