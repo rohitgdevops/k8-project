@@ -1,6 +1,12 @@
 name: testing via udemy
 
-on: [push]
+on: 
+  schedule:
+   # - cron: "0  * * * *"
+  push:
+    branches:
+      - main
+  
 
 jobs:
   run-shell-commands:
