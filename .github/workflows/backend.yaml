@@ -11,7 +11,8 @@ on:
       - '.github/workflows/backend.yml'  # Also trigger if this workflow file itself changes
   workflow_dispatch:                    # To trigger the workflow manually
 env:
-   DUMMY: "triiger"
+   DUMMY: "triiger2"
+   
 jobs:
   build:
     #  Define the runner environment
